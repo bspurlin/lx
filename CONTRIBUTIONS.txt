@@ -1,0 +1,15 @@
+The lx project welcomes contributions of new functionality as well as bug fixes.  Especially welcome are support for new languages/package managers and new scrapers.  We ask that the following questions be answered for contributions of new functionality (the "new code") that you (the contributor) are contributing:
+
+1.  Does the new code have any Open Source or other dependencies?  Are new Node modules required?  If so please list the new dependencies.
+
+2.  Do you have the rights to the new code? Other than dependencies listed above, are you the sole author?
+
+3.  Are you willing to license the new code under the MIT License http://opensource.org/licenses/MIT ?  If so please include a copyright header in each program file of the new code of the form:
+
+    The MIT License
+
+    Copyright © <year or year range> <author name>
+
+    	      	   or
+
+    Copyright (c)  <year or year range> <author name>
