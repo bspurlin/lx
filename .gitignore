@@ -25,5 +25,4 @@ npm-debug.log
 /node_modules/follow-redirects
 /node_modules/error-handler
 /node_modules/missing
-/node_modules/normalize-package-data
-/node_modules/github-url-from-git
+
