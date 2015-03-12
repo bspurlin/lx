@@ -72,7 +72,7 @@ lx("node","/home/user/node_modules/lx",options,function(error,license_objects){}
 #### Example
 
 ```js
-var lx = require("lx"); 
+var lx = require("lx-scan"); 
 
 // Scans "lx", gathers licensing information, and then prints out the array of package
 // information
