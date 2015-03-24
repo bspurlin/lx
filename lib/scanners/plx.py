@@ -30,7 +30,7 @@ def find_package_info(name):
 	"""
 	global packages_already_seen
 	if name.lower() not in installed_packages: 
-		return None 
+		return list() 
 	package = installed_packages[name.lower()]
 	packages_already_seen |= set([name.lower()])
 	package_info = { 
@@ -79,7 +79,7 @@ def warning(*objs):
 	print(*objs,file=sys.stderr) 
 
 try: 
- input_argument = sys.argv[1]
+	input_argument = sys.argv[1]
 except IndexError: 
 	object_to_print = find_package_info_all()
 else: 
