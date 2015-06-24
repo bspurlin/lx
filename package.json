@@ -1,7 +1,7 @@
 {
-  "name": "lx-scan",
-  "version": "0.1.1",
-  "description": "License eXtension to find 5-tuples of all installed packages: name, version, project home page, license (e. g. Apache v2, BSD) and required notice.  It includes a GUI to edit information for each package and to enter information if necessary.",
+  "name": "lx",
+  "version": "1.0.0",
+  "description": "License eXtension to find 5-tuples of all installed packages:   name, version, project home page, license (e. g. Apache v2, BSD) and required notice.  It includes a GUI to edit information for each package and to enter information if necessary.",
   "main": "./lx.js",
   "bin": "./bin/lx-cli.js",
   "directories": {
@@ -37,14 +37,13 @@
     "LXWebGui",
     "scanner_utils"
   ],
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "scripts": {
     "test": "bin/lx-cli.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/bspurlin/lx"
+    "url": "https://github.com/pedwardsIBM/lx"
   },
   "keywords": [
     "License",

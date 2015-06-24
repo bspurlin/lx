@@ -30,7 +30,7 @@ def find_package_info(name):
 	"""
 	global packages_already_seen
 	if name.lower() not in installed_packages: 
-		return list() 
+		return None 
 	package = installed_packages[name.lower()]
 	packages_already_seen |= set([name.lower()])
 	package_info = { 
@@ -54,6 +54,7 @@ def find_package_info(name):
 	dependency_package_info_lists = list() 
 	for dep in dependency_search_list: 
 		dependency_package_info_lists.append(find_package_info(dep.project_name))
+	dependency_package_info_lists = filter(None,dependency_package_info_lists)
 	dependency_package_info = [dependency 
 								for dep_list in dependency_package_info_lists
 									for dependency in dep_list]
@@ -79,7 +80,7 @@ def warning(*objs):
 	print(*objs,file=sys.stderr) 
 
 try: 
-	input_argument = sys.argv[1]
+ input_argument = sys.argv[1]
 except IndexError: 
 	object_to_print = find_package_info_all()
 else: 

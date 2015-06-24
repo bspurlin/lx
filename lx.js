@@ -1,5 +1,21 @@
 var scanners = require("./lib/scanners"); 
 var scraper = require("./lib/scrapers"); 
+var licid = require("./lib/lic-id"); 
+var _ = require("underscore"); 
+
+
+var COPYRIGHT_REGEX = /^.{0,3}(copyright|\(c\)).{0,100}$/mig; 
+// The above regular expression is left intentionally inclusive
+// so that it errs on the side of picking up lines that aren't copyright
+// notices, rather than ignoring lines which are. 
+// The following "ignore list" allows correction to remove common exceptions 
+// which are known not to be copyright notices
+var IGNORE_LIST = [ 
+					/.*COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER.*/ig, 
+					/.*copyright notice and this permission notice appear in all copies.*/ig, 
+					/.*COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT.*/ig
+				  ]; 
+
 
 var alphasort = function(a,b) { 
 	a = a.name.toLowerCase(); 
@@ -52,11 +68,11 @@ var lx = function(type,directory,opts,callback) {
 			license_objects = license_objects.sort(alphasort); 
 			return callback(null,license_objects); 
 		}
+
 		var local_licenses = []; 
 		var remote_licenses = [];
-
 		// Sort license objects into those that have been locally determined 
-		// and those that need more processing 
+		// and those that need to be checked for online processing 
 		license_objects.forEach(function (license_object) { 
 			if(license_object.licensefile.length > 0)
 				local_licenses.push(license_object); 
@@ -70,6 +86,36 @@ var lx = function(type,directory,opts,callback) {
 			var final_license_objects = local_licenses.concat(remote_licenses); 
 			// Put the license objects in alphabetical order by name
 			final_license_objects = final_license_objects.sort(alphasort); 
+			
+			final_license_objects = final_license_objects.map(function (license_object) { 
+	 			// If a license was found for the package but no license type
+	 			// attempt to populate it
+	 			if (license_object.licensefile.length > 0) {
+		 				license_object.license = licid(license_object.licensefile[0].text);
+		 				license_object.licensefile = license_object.licensefile.map(function (license) { 
+							var notice_instances = []; 
+							var potential_license; 
+							if( potential_license = licid(license.text) ) { 
+								license_object.license = potential_license; 
+							}
+	
+							if(license.text) { 
+								notice_instances = license.text.match(COPYRIGHT_REGEX);
+								if(notice_instances) license.notice = _.uniq(notice_instances).filter(function (license_line) { 							
+									for(var i = 0;i<IGNORE_LIST.length;i++) { 
+										if(IGNORE_LIST[i].exec(license_line))
+										return false; 
+									}
+									return true; 
+								}).join("|"); 
+								else license.notice = undefined;
+							}
+							return license; 
+						});
+				}
+				return license_object; 
+	 		}); 
+			
 			callback(null,final_license_objects); 
 		}); 
 	}); 
